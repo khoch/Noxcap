@@ -21,43 +21,29 @@ var down = true;
 var up = false;
 var right = false;
 
-var x = 1;
-var y = 1;
+var x = 10;
+var y = 10;
 
 var start = function start(){
 	ctx.clearRect(0,0,500,500);
-	if (left && x > 0){
-		x -= 1;
-		ctx.moveTo(x,y);
-		ctx.beginPath();
-		ctx.arc(x, y, 5, 0, Math.PI*2);
-		ctx.stroke();
-		ctx.fill();
+	if (left && x > 10){
+		x -= 2;
 	}
-	else if (right && x < 500){
-		x += 1;
-		ctx.moveTo(x,y);
-		ctx.beginPath();
-		ctx.arc(x, y, 5, 0, Math.PI*2);
-		ctx.stroke();
-		ctx.fill();
+	else if (right && x < 490){
+		x += 2;
 	}
-	else if (down && y < 500){
-		y += 1;
-		ctx.moveTo(x,y);
-		ctx.beginPath();
-		ctx.arc(x, y, 5, 0, Math.PI*2);
-		ctx.stroke();
-		ctx.fill();
+	else if (down && y < 490){
+		y += 2;
+
 	}
-	else if (up && y > 0){
-		y -= 1;
-		ctx.moveTo(x,y);
-		ctx.beginPath();
-		ctx.arc(x, y, 5, 0, Math.PI*2);
-		ctx.stroke();
-		ctx.fill();
+	else if (up && y > 10){
+		y -= 2;
 	}
+	ctx.moveTo(x,y);
+	ctx.beginPath();
+	ctx.arc(x, y, 10, 0, Math.PI*2);
+	ctx.stroke();
+	ctx.fill();
 };
 
 document.onkeydown = checkKey;
@@ -68,31 +54,31 @@ function checkKey(e) {
 
     if (e.keyCode == '38') {
         // up arrow
-        var left = false;
-	var down = false;
-	var up = true;
-	var right = false;
+        left = false;
+	down = false;
+	up = true;
+	right = false;
     }
     else if (e.keyCode == '40') {
         // down arrow
-        var left = false;
-	var down = true;
-	var up = false;
-	var right = false;
+        left = false;
+	down = true;
+	up = false;
+	right = false;
     }
     else if (e.keyCode == '37') {
        // left arrow
-	var left = true;
-	var down = false;
-	var up = false;
-	var right = false;
+	left = true;
+	down = false;
+	up = false;
+	right = false;
     }
     else if (e.keyCode == '39') {
        // right arrow
-        var left = false;
-	var down = false;
-	var up = false;
-	var right = true;
+        left = false;
+	down = false;
+	up = false;
+	right = true;
     }
 
 };
