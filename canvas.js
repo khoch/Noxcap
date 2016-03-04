@@ -21,8 +21,8 @@ var down = true;
 var up = false;
 var right = false;
 
-var x = 0;
-var y = 0;
+var x = 1;
+var y = 1;
 
 var start = function start(){
 	ctx.clearRect(0,0,500,500);
@@ -34,7 +34,7 @@ var start = function start(){
 		ctx.stroke();
 		ctx.fill();
 	}
-	if (right && x < 500){
+	else if (right && x < 500){
 		x += 1;
 		ctx.moveTo(x,y);
 		ctx.beginPath();
@@ -42,7 +42,7 @@ var start = function start(){
 		ctx.stroke();
 		ctx.fill();
 	}
-	if (down && y < 500){
+	else if (down && y < 500){
 		y += 1;
 		ctx.moveTo(x,y);
 		ctx.beginPath();
@@ -50,7 +50,7 @@ var start = function start(){
 		ctx.stroke();
 		ctx.fill();
 	}
-	if (up && x > 0){
+	else if (up && y > 0){
 		y -= 1;
 		ctx.moveTo(x,y);
 		ctx.beginPath();
