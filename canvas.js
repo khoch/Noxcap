@@ -1,5 +1,10 @@
-var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
+console.log("hello david");
+
+var svg = document.getElementById("svg1");
+
+var setup = function setup() {
+    
+};
 
 //ctx.fillStyle = "#000ff";
 //ctx.fillRect(50,50,100,200);
@@ -21,23 +26,23 @@ var down = true;
 var up = false;
 var right = false;
 
-var x = 10;
-var y = 10;
+var pacX = 10;
+var pacY = 10;
 
 var start = function start(){
 	ctx.clearRect(0,0,500,500);
-	if (left && x > 10){
-		x -= 2;
+	if (left && pacX >= 10){
+		pacX -= 2;
 	}
-	else if (right && x < 490){
-		x += 2;
+	else if (right && pacX =< 490){
+		pacX += 2;
 	}
-	else if (down && y < 490){
-		y += 2;
+	else if (down && pacY =< 490){
+		pacY += 2;
 
 	}
-	else if (up && y > 10){
-		y -= 2;
+	else if (up && pacY >= 10){
+		pacY -= 2;
 	}
 	ctx.moveTo(x,y);
 	ctx.beginPath();
@@ -45,6 +50,58 @@ var start = function start(){
 	ctx.stroke();
 	ctx.fill();
 };
+
+var Pac = class Pac {
+    constructor(x, y) {
+	this.x = x;
+	this.y = y;
+	left = false;
+	down = false;
+	up = false;
+	right = false;
+    };
+
+    move() {
+	if (x <= 10 || x >= 490) {
+	    left = false;
+	    right = false;
+	}
+	if (y <= 10 || y >= 490) {
+	    up = false;
+	    down = false;
+	}
+	//haven't moved yet
+    };
+    
+    ifTouched() {
+	return "";
+    };
+};
+
+var Ghost = class Ghost {
+    constructor(x, y) {
+	this.x = x;
+	this.y = y;
+	this.directionX = 1;
+	this.directionY = 1;
+    };
+
+    move() {
+	if (x <= 10 || x >= 490) {
+	    directionX *= -1;
+	}
+	if (y <= 10 || y >= 490) {
+	    directionY *= -1;
+	}
+	this.x += directionX;
+	this.y += directionY;
+    };
+    
+    ifTouched() {
+	return "";
+    };
+};
+
 
 document.onkeydown = checkKey;
 
