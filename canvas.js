@@ -6,29 +6,6 @@ var setup = function setup() {
     
 };
 
-//ctx.fillStyle = "#000ff";
-//ctx.fillRect(50,50,100,200);
-//ctx.beginPath();
-//ctx.arc(200,300,50,0,Math.PI*2);
-//ctx.fill();
-
-//ignore part 2
-//ctx.beginPath();
-//ctx.moveTo(250,250);
-//ctx.quadraticCurveTo(250,250,400,250);
-//ctx.quadraticCurveTo(250, 250, 200, 300);
-//ctx.closePath();
-//ctx.stroke();
-//ctx.fill();
-
-var left = false;
-var down = true;
-var up = false;
-var right = false;
-
-var pacX = 10;
-var pacY = 10;
-
 var start = function start(){
 	ctx.clearRect(0,0,500,500);
 	if (left && pacX >= 10){
@@ -61,6 +38,41 @@ var Pac = class Pac {
 	right = false;
     };
 
+    document.onkeydown = checkKey;
+    checkKey(e) {
+	console.log(e.keyCode);
+	e = e || window.event;
+	
+	if (e.keyCode == '38') {
+            // up arrow
+            left = false;
+	    down = false;
+	    up = true;
+	    right = false;
+	}
+	else if (e.keyCode == '40') {
+            // down arrow
+            left = false;
+	    down = true;
+	    up = false;
+	    right = false;
+	}
+	else if (e.keyCode == '37') {
+	    // left arrow
+	    left = true;
+	    down = false;
+	    up = false;
+	    right = false;
+	}
+	else if (e.keyCode == '39') {
+	    // right arrow
+            left = false;
+	    down = false;
+	    up = false;
+	    right = true;
+	}	
+    };
+    
     move() {
 	if (x <= 10 || x >= 490) {
 	    left = false;
@@ -70,7 +82,18 @@ var Pac = class Pac {
 	    up = false;
 	    down = false;
 	}
-	//haven't moved yet
+	if (left) {
+	    x -= 2;
+	}
+	else if (down) {
+	    y += 2;
+	}
+	else if (up) {
+	    y -= 2;
+	}
+	else {
+	    x += 2;
+	}
     };
     
     ifTouched() {
@@ -101,45 +124,5 @@ var Ghost = class Ghost {
 	return "";
     };
 };
-
-
-document.onkeydown = checkKey;
-
-function checkKey(e) {
-	console.log(e.keyCode);
-    e = e || window.event;
-
-    if (e.keyCode == '38') {
-        // up arrow
-        left = false;
-	down = false;
-	up = true;
-	right = false;
-    }
-    else if (e.keyCode == '40') {
-        // down arrow
-        left = false;
-	down = true;
-	up = false;
-	right = false;
-    }
-    else if (e.keyCode == '37') {
-       // left arrow
-	left = true;
-	down = false;
-	up = false;
-	right = false;
-    }
-    else if (e.keyCode == '39') {
-       // right arrow
-        left = false;
-	down = false;
-	up = false;
-	right = true;
-    }
-
-};
-
-
 
 myInterval = setInterval(start, 20);
