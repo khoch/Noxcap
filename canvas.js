@@ -1,58 +1,52 @@
 console.log("hello david");
+var startbutton = document.getElementById("start");
+startbutton.addEventListener("click", setup);
 
 var svg = document.getElementById("svg1");
 
 var setup = function setup() {
+    Pac(10, 10);
+    go();
     
 };
 
-var start = function start(){
-	ctx.clearRect(0,0,500,500);
-	if (left && pacX >= 10){
-		pacX -= 2;
-	}
-	else if (right && pacX =< 490){
-		pacX += 2;
-	}
-	else if (down && pacY =< 490){
-		pacY += 2;
-
-	}
-	else if (up && pacY >= 10){
-		pacY -= 2;
-	}
-	ctx.moveTo(x,y);
-	ctx.beginPath();
-	ctx.arc(x, y, 10, 0, Math.PI*2);
-	ctx.stroke();
-	ctx.fill();
+var go = function go() {
+    Pac.draw();
 };
 
-var Pac = class Pac {
-    constructor(x, y) {
-	this.x = x;
-	this.y = y;
-	left = false;
-	down = false;
-	up = false;
-	right = false;
-    };
+function Pac(x, y) {
+    this.x = x;
+    this.y = y;
+    this.left = false;
+    this.down = false;
+    this.up = false;
+    this.right = false;
+    this.imgPac = document.createNewElementNS("http://www.w3.org/2000/svg", "circle");
+    this.imgPac.setAttribute("r", 10);
+};
 
+Pac.draw = function draw() {
+    Pac.move();
+    this.imgPac.setAttribute("cx", x);
+    this.imgPac.setAttribute("cy", y);
+};
+    
+Pac.move = function move() {
     document.onkeydown = checkKey;
-    checkKey(e) {
+    function checkKey(e) {
 	console.log(e.keyCode);
 	e = e || window.event;
 	
 	if (e.keyCode == '38') {
-            // up arrow
-            left = false;
+	    // up arrow
+	    left = false;
 	    down = false;
 	    up = true;
 	    right = false;
 	}
 	else if (e.keyCode == '40') {
-            // down arrow
-            left = false;
+	    // down arrow
+	    left = false;
 	    down = true;
 	    up = false;
 	    right = false;
@@ -66,63 +60,57 @@ var Pac = class Pac {
 	}
 	else if (e.keyCode == '39') {
 	    // right arrow
-            left = false;
+	    left = false;
 	    down = false;
 	    up = false;
 	    right = true;
 	}	
     };
     
-    move() {
-	if (x <= 10 || x >= 490) {
-	    left = false;
-	    right = false;
-	}
-	if (y <= 10 || y >= 490) {
-	    up = false;
-	    down = false;
-	}
-	if (left) {
-	    x -= 2;
-	}
-	else if (down) {
-	    y += 2;
-	}
-	else if (up) {
-	    y -= 2;
-	}
-	else {
-	    x += 2;
-	}
-    };
-    
-    ifTouched() {
-	return "";
-    };
+    if (this.x <= 10 || this.x >= 490) {
+	this.left = false;
+	this.right = false;
+    }
+    if (this.y <= 10 || this.y >= 490) {
+	this.up = false;
+	this.down = false;
+    }
+    if (this.left) {
+	this.x -= 2;
+    }
+    else if (this.down) {
+	this.y += 2;
+    }
+    else if (this.up) {
+	this.y -= 2;
+    }
+    else {
+	this.x += 2;
+    }
 };
 
-var Ghost = class Ghost {
-    constructor(x, y) {
-	this.x = x;
-	this.y = y;
-	this.directionX = 1;
-	this.directionY = 1;
-    };
+//var Ghost =  Ghost {
+//   constructor(x, y) {
+//	this.x = x;
+//	this.y = y;
+//	this.directionX = 1;
+//	this.directionY = 1;
+  //  };
+//
+  //  move() {
+//	if (x <= 10 || x >= 490) {
+//	    directionX *= -1;
+//	}
+//	if (y <= 10 || y >= 490) {
+//	    directionY *= -1;
+//	}
+//	this.x += directionX;
+//	this.y += directionY;
+  //  };
+    //
+//    ifTouched() {
+//	return "";
+  //  };
+//};
 
-    move() {
-	if (x <= 10 || x >= 490) {
-	    directionX *= -1;
-	}
-	if (y <= 10 || y >= 490) {
-	    directionY *= -1;
-	}
-	this.x += directionX;
-	this.y += directionY;
-    };
-    
-    ifTouched() {
-	return "";
-    };
-};
-
-myInterval = setInterval(start, 20);
+myInterval = setInterval(go, 20);
