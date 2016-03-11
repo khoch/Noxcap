@@ -11,12 +11,19 @@
 	<div style="position: relative;">
 		<canvas id="myCanvas" width="500" height="500" style="border:1px  solid #000000;">
 		</canvas>
-		<svg id="mysvg" style="position: absolute; 
+		<svg id="pacman" style="position: absolute; 
               		left: 0px; 
               		top: 0px;
               		z-index: 2;
        		">
  			 <circle cx="10" cy="10" r="10" stroke="black" stroke-width="3" fill="yellow" />
+		</svg>
+		<svg id="ghost" style="position: absolute; 
+              		left: 200px; 
+              		top: 200px;
+              		z-index: 3;
+       		">
+ 			 <circle cx="10" cy="10" r="10" stroke="black" stroke-width="3" fill="red" />
 		</svg>
 	</div>
 	<br>
