@@ -1,119 +1,125 @@
-console.log("hello david");
-var startbutton = document.getElementById("start");
-startbutton.addEventListener("click", setup);
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+var mysvg = document.getElementById("mysvg");
 
-var Pac1;
+//ctx.fillStyle = "#000ff";
+//ctx.fillRect(50,50,100,200);
+//ctx.beginPath();
+//ctx.arc(200,300,50,0,Math.PI*2);
+//ctx.fill();
 
-var svg = document.getElementById("svg1");
+//ignore part 2
+//ctx.beginPath();
+//ctx.moveTo(250,250);
+//ctx.quadraticCurveTo(250,250,400,250);
+//ctx.quadraticCurveTo(250, 250, 200, 300);
+//ctx.closePath();
+//ctx.stroke();
+//ctx.fill();
 
-var setup = function setup() {
-    Pac1 = new pac(20, 20);
-};
 
-function pac(x, y) {
-    this.x = x;
-    this.y = y;
-    this.left = false;
-    this.down = false;
-    this.up = false;
-    this.right = false;
-    this.imgPac =document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    this.imgPac.setAttribute("r", 10);
-    
-    this.draw = function () {
-	this.move();
-	this.imgPac.setAttribute("cx", x);
-	this.imgPac.setAttribute("cy", y);
-	console.log("draw");
-    };
-    
-    this.move = function () {
-	document.onkeydown = checkKey;
-	function checkKey(e) {
-	    console.log(e.keyCode);
-	    e = e || window.event;
-	    
-	    if (e.keyCode == '38') {
-		// up arrow
-		this.left = false;
-		this.down = false;
-		this.up = true;
-		this.right = false;
-	    }
-	    else if (e.keyCode == '40') {
-		// down arrow
-		this.left = false;
-		this.down = true;
-		this.up = false;
-		this.right = false;
-		console.log(this.down);
-	    }
-	    else if (e.keyCode == '37') {
-		// left arrow
-		this.left = true;
-		this.down = false;
-		this.up = false;
-		this.right = false;
-	    }
-	    else if (e.keyCode == '39') {
-		// right arrow
-		this.left = false;
-		this.down = false;
-		this.up = false;
-		this.right = true;
-	    }
-	};
+
+var left = false;
+var down = true;
+var up = false;
+var right = false;
+var spacedown = false;
+
+var x = 10;
+var y = 10;
+
+ctx.rect(10, 10, 480, 480);
+ctx.fillStyle = 'black';
+ctx.fill();
+ctx.lineWidth = 20;
+ctx.strokeStyle = 'blue';
+ctx.stroke();
+
+var start = function start(){
+	//ctx.clearRect(0,0,500,500);
 	
-	if (this.x < 10 || this.x > 490) {
-	    this.left = false;
-	    this.right = false;
+	if (left && x > 10){
+		x -= 10;
 	}
-	if (this.y < 10 || this.y > 490) {
-	    this.up = false;
-	    this.down = false;
+	else if (right && x < 490){
+		x += 10;
 	}
-	if (this.left) {
-	    this.x -= 2;
+	else if (down && y < 490){
+		y += 10;
+
 	}
-	else if (this.down) {
-	    this.y += 2;
-	    console.log("DOWN");
+	else if (up && y > 10){
+		y -= 10;
 	}
-	else if (this.up) {
-	    this.y -= 2;
+	if (spacedown){
+	ctx.lineTo(x,y);
+	ctx.stroke();
 	}
-	else if (this.right){
-	    this.x += 2;
-	}
-    };
+	//ctx.moveTo(x,y);
+	//ctx.beginPath();
+	//ctx.moveTo(x,y);
+	//ctx.strokeStyle = 'blue';
+	//ctx.fillStyle = 'blue';
+	//ctx.lineWidth = 1;
+	//ctx.beginPath();
+	//ctx.arc(x, y, 1, 0, Math.PI*2);
+	//ctx.stroke();
+	//ctx.fill();
+	mysvg.style.left = x-10 + "px";
+	mysvg.style.top = y-10 + "px";
 };
 
-var go = function go() {
-    Pac1.draw();
+document.onkeydown = checkKey;
+
+function checkKey(e) {
+	console.log(e.keyCode);
+    e = e || window.event;
+
+    if (e.keyCode == '38') {
+        // up arrow
+        left = false;
+	down = false;
+	up = true;
+	right = false;
+    }
+    else if (e.keyCode == '40') {
+        // down arrow
+        left = false;
+	down = true;
+	up = false;
+	right = false;
+    }
+    else if (e.keyCode == '37') {
+       // left arrow
+	left = true;
+	down = false;
+	up = false;
+	right = false;
+    }
+    else if (e.keyCode == '39') {
+       // right arrow
+        left = false;
+	down = false;
+	up = false;
+	right = true;
+    }
+	else if (e.keyCode == '32') {
+       // space bar
+    if(spacedown){
+		ctx.closePath();
+		ctx.stroke();
+		ctx.fillStyle = 'blue';
+		ctx.fill();
+	}else{
+		console.log("start");
+		ctx.beginPath();
+		ctx.moveTo(x,y);
+	}
+	spacedown = !spacedown
+    }
+
 };
 
-//var Ghost =  Ghost {
-//   constructor(x, y) {
-//	this.x = x;
-//	this.y = y;
-//	this.directionX = 1;
-//	this.directionY = 1;
-  //  };
-//
-  //  move() {
-//	if (x <= 10 || x >= 490) {
-//	    directionX *= -1;
-//	}
-//	if (y <= 10 || y >= 490) {
-//	    directionY *= -1;
-//	}
-//	this.x += directionX;
-//	this.y += directionY;
-  //  };
-    //
-//    ifTouched() {
-//	return "";
-  //  };
-//};
-setup();
-myInterval = setInterval(go, 20);
+
+
+myInterval = setInterval(start, 40);
