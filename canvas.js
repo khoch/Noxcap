@@ -1,6 +1,7 @@
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
-var mysvg = document.getElementById("pacman");
+var pacman = document.getElementById("pacman");
+var ghost = document.getElementById("ghost");
 
 var pacleft = false;
 var pacdown = true;
@@ -9,25 +10,16 @@ var pacright = false;
 
 var spacedown = false;
 
-
 var ghostdown = true;
-
 var ghostright = true;
-
-var ghostHBtopX;
-var ghostHBtopY;
-var ghostHBbotX;
-var ghostHBbotY;
-var ghostHBleftX;
-var ghostHBleftY;
-var ghostHBrightX;
-var ghostHBrightY;
 
 var ghostx = 200;
 var ghosty = 250;
 
 var pacx = 10;
 var pacy = 10;
+
+var pixel;
 
 ctx.rect(10, 10, 480, 480);
 ctx.fillStyle = 'black';
@@ -39,17 +31,17 @@ ctx.stroke();
 var start = function start(){
 	//ctx.clearRect(0,0,500,500);
 	if (pacleft && pacx > 10){
-		pacx -= 10;
+		pacx -= 20;
 	}
 	else if (pacright && pacx < 490){
-		pacx += 10;
+		pacx += 20;
 	}
 	else if (pacdown && pacy < 490){
-		pacy += 10;
+		pacy += 20;
 
 	}
 	else if (pacup && pacy > 10){
-		pacy -= 10;
+		pacy -= 20;
 	}
 	if (spacedown){
 	ctx.lineTo(pacx,pacy);
@@ -59,6 +51,55 @@ var start = function start(){
 	pacman.style.left = pacx-10 + "px";
 	pacman.style.top = pacy-10 + "px";
 	
+	if (ctx.getImageData(ghostx, ghosty-10, 1, 1).data[2] == 255){ //top hitbox
+		ghosty += 5;
+		if(ghostright){
+			ghostx += 5;
+		}
+		else{
+			ghostx -= 5;
+		}
+		ghostdown = true;
+		ghost.style.left = ghostx-10 + "px";
+		ghost.style.top = ghosty-10 + "px";
+	}
+	else if (ctx.getImageData(ghostx-10, ghosty, 1, 1).data[2] == 255){ //left hitbox
+		ghostx += 5;
+		if(ghostdown){
+			ghosty += 5;
+		}
+		else{
+			ghosty -= 5;
+		}
+		ghostright = true;
+		ghost.style.left = ghostx-10 + "px";
+		ghost.style.top = ghosty-10 + "px";
+	}
+	else if (ctx.getImageData(ghostx+10, ghosty, 1, 1).data[2] == 255){ //right hitbox
+		ghostx -= 5;
+		if(ghostdown){
+			ghosty += 5;
+		}
+		else{
+			ghosty -= 5;
+		}
+		ghostright = false;
+		ghost.style.left = ghostx-10 + "px";
+		ghost.style.top = ghosty-10 + "px";
+	}
+	else if (ctx.getImageData(ghostx, ghosty+10, 1, 1).data[2] == 255){ //bottom hitbox
+		ghosty -= 5;
+		if(ghostright){
+			ghostx += 5;
+		}
+		else{
+			ghostx -= 5;
+		}
+		ghostdown = false;
+		ghost.style.left = ghostx-10 + "px";
+		ghost.style.top = ghosty-10 + "px";
+	}
+	else{
 	if(ghostdown){
 		ghosty += 5;
 	}
@@ -71,12 +112,10 @@ var start = function start(){
 	else{
 		ghostx -= 5;
 	}
-	
 	ghost.style.left = ghostx-10 + "px";
 	ghost.style.top = ghosty-10 + "px";
-	
-	var p = ctx.getImageData(pacx, pacy, 1, 1).data; 
-    //var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
+	}
+	//var hex = "#" + ("000000" + rgbToHex(p[0], p[1], p[2])).slice(-6);
 	//console.log(p);
 };
 
@@ -124,11 +163,11 @@ function checkKey(e) {
 	}else{
 		console.log("start");
 		ctx.beginPath();
-		ctx.moveTo(x,y);
+		ctx.moveTo(pacx,pacy);
 	}
 	spacedown = !spacedown
     }
 
 };
 
-myInterval = setInterval(start, 40);
+myInterval = setInterval(start, 80);
